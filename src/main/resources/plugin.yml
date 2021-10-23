@@ -1,0 +1,11 @@
+name: SquidMC
+version: '${project.version}'
+main: de.lamue.squidgame.squidgame.SquidMC
+author: LarsMueller
+api-version: 1.17
+
+commands:
+  setlobbyspawn:
+  setbedspawn:
+  setgamespawn:
+  start:
