@@ -32,7 +32,7 @@ public class EventPlayerDeath implements Listener {
             Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
                 @Override
                 public void run() {
-                    player.teleport(PlayerManager.isAliveMap.get(0));
+                    player.teleport(PlayerManager.isAliveList.get(0));
                 }
             }, 1);
             GameManager.registerDeath();

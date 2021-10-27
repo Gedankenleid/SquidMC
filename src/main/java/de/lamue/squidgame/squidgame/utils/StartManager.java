@@ -112,7 +112,6 @@ public class StartManager {
         Bukkit.getScheduler().cancelTask(COUNTDOWN);
         GameManager.setGameStatus(GAMESTATUS.INGAME);
         GameManager.addRoundNumber();
-        GAME nextGame = GameManager.getNextGame();
-        GameManager.startGame(nextGame);
+        GameManager.startGame(GameManager.getNextGame());
     }
 }

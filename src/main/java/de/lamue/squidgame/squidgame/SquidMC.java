@@ -19,6 +19,8 @@ public final class SquidMC extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Bukkit.getConsoleSender().sendMessage(Text.getLogo());
+        Bukkit.getConsoleSender().sendMessage(Text.PREFIX + "Laden...");
         pluginInstance = this;
         try {
             ConfigurationManager.checkConfiguration();
@@ -47,6 +49,7 @@ public final class SquidMC extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new EventItemDrop(), this);
         Bukkit.getPluginManager().registerEvents(new EventEnvironmentChange(), this);
         Bukkit.getPluginManager().registerEvents(new EventBuild(), this);
+        Bukkit.getPluginManager().registerEvents(new EventPlayerMove(), this);
         StartManager.loadMinPlayers();
         GameManager.setPVP(false);
         GameManager.setAllowedDropping(false);
@@ -60,6 +63,7 @@ public final class SquidMC extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Bukkit.getConsoleSender().sendMessage(Text.getLogo());
         //MySQL.close();
         PlayerManager.kickAllPlayers(Text.PREFIX+"§cDer Server startet neu!");
         Bukkit.getConsoleSender().sendMessage(Text.PREFIX + "§aPlugin gestoppt!");

@@ -1,5 +1,7 @@
 package de.lamue.squidgame.squidgame.utils;
 
+import org.bukkit.Location;
+
 public enum GAME {
 
     LOBBY,
@@ -41,5 +43,36 @@ public enum GAME {
             return "Ende";
         }
         return "Keins";
+    }
+
+    public static Location getSpawnLocation(GAME game){
+        if (game.equals(LOBBY)) {
+            return LocationManager.getLocation(LOCATIONTYPE.LOBBY);
+        }
+        if (game.equals(REDLIGHTGREENLIGHT)) {
+            return LocationManager.getLocation(LOCATIONTYPE.REDLIGHTGREENLIGHT);
+        }
+        if (game.equals(ZUCKERFIGUR)) {
+            return LocationManager.getLocation(LOCATIONTYPE.ZUCKERFIGUR);
+        }
+        if (game.equals(TAUZIEHEN)) {
+            return LocationManager.getLocation(LOCATIONTYPE.TAUZIEHEN);
+        }
+        if (game.equals(MURMELN)) {
+            return LocationManager.getLocation(LOCATIONTYPE.MURMELN);
+        }
+        if (game.equals(TRITTSTEIN)) {
+            return LocationManager.getLocation(LOCATIONTYPE.TRITTSTEIN);
+        }
+        if (game.equals(TINTENFISCH)) {
+            return LocationManager.getLocation(LOCATIONTYPE.TINTENFISCH);
+        }
+        if (game.equals(PVP)) {
+            return LocationManager.getLocation(LOCATIONTYPE.BEDROOM);
+        }
+        if (game.equals(ENDE)) {
+            return LocationManager.getLocation(LOCATIONTYPE.LOBBY);
+        }
+        return LocationManager.getLocation(LOCATIONTYPE.LOBBY);
     }
 }

@@ -20,4 +20,14 @@ public class Text {
         player.sendMessage(PREFIX+"§cDu hast nicht genügend Rechte für diesen Befehl.");
     }
 
+    public static String getLogo(){
+        return "§3╭━━━╮§7╱╱╱╱╱╱╱╱§3╭§c┳━╮╭━┳━━━╮§f\n" +
+                "§3┃╭━╮┃§7╱╱╱╱╱╱╱╱§3┃§c┃┃╰╯┃┃╭━╮┃§f\n" +
+                "§3┃╰━━┳━━┳╮╭┳┳━╯§c┃╭╮╭╮┃┃ ╰╯§f\n" +
+                "§3╰━━╮┃╭╮┃┃┃┣┫╭╮§c┃┃┃┃┃┃┃ ╭╮§f\n" +
+                "§3┃╰━╯┃╰╯┃╰╯┃┃╰╯§c┃┃┃┃┃┃╰━╯┃§f\n" +
+                "§3╰━━━┻━╮┣━━┻┻━━§c┻╯╰╯╰┻━━━╯§f\n" +
+                "§7╱╱╱╱╱╱§3┃┃§f\n" +
+                "§7╱╱╱╱╱╱§3╰╯§f";
+    }
 }

@@ -8,13 +8,15 @@ import java.util.HashMap;
 
 public class PlayerManager {
 
+    public static HashMap<Player, String> PLAYERLOCATIONS = new HashMap<>();
+
     public static HashMap<Player, PLAYERSTATUS> playerstatusHashMap = new HashMap<>();
 
     public static HashMap<Player, PLAYERSTATUS> getPlayersInHashMap() {
         return playerstatusHashMap;
     }
 
-    public static ArrayList<Player> isAliveMap = new ArrayList<>();
+    public static ArrayList<Player> isAliveList = new ArrayList<>();
 
     public static boolean isInHashMap(Player player){
         return playerstatusHashMap.containsKey(player);
@@ -22,18 +24,18 @@ public class PlayerManager {
 
     public static void setIsAlive(Player player){
         if(!isAlive(player)){
-            isAliveMap.add(player);
+            isAliveList.add(player);
         }
     }
 
     public static void removeIsAlive(Player player){
         if(isAlive(player)){
-            isAliveMap.remove(player);
+            isAliveList.remove(player);
         }
     }
 
     public static boolean isAlive(Player player){
-        if(isAliveMap.contains(player)){
+        if(isAliveList.contains(player)){
             return true;
         }else{
             return false;
@@ -41,7 +43,7 @@ public class PlayerManager {
     }
 
     public static ArrayList<Player> getPlayersAlive(){
-        return isAliveMap;
+        return isAliveList;
     }
 
     public static void setPlayerStatus(Player player, PLAYERSTATUS playerstatus){

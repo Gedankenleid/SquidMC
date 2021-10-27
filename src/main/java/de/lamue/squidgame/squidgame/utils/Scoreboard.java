@@ -27,7 +27,7 @@ public class Scoreboard {
         if(!GameManager.getCurrentGameStatus().equals(GAMESTATUS.INGAME)){
             currentPlayersAlive.setSuffix("§7"+Bukkit.getOnlinePlayers().size());
         }else{
-            currentPlayersAlive.setSuffix("§7"+PlayerManager.isAliveMap.size());
+            currentPlayersAlive.setSuffix("§7"+PlayerManager.isAliveList.size());
         }
         currentPlayersAlive.addEntry(ChatColor.RED.toString());
 
@@ -148,7 +148,7 @@ public class Scoreboard {
                         if(!GameManager.getCurrentGameStatus().equals(GAMESTATUS.INGAME)){
                             nav.setSuffix("§7" + Bukkit.getOnlinePlayers().size());
                         }else{
-                            nav.setSuffix("§7" + PlayerManager.isAliveMap.size());
+                            nav.setSuffix("§7" + PlayerManager.isAliveList.size());
                         }
                         Team map = scoreboard.getTeam("game");
                         map.setSuffix("§7" + GAME.getName(GameManager.getNextGame()));

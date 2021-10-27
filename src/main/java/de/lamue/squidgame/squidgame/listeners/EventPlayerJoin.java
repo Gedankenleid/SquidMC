@@ -47,6 +47,7 @@ public class EventPlayerJoin implements Listener {
                 playerJoinEvent.setJoinMessage("§7§l→ §e"+player.getDisplayName()+" §7hat das Spiel betreten!");
                 PlayerManager.setPlayerStatus(player, PLAYERSTATUS.WAITING);
                 DebugManager.sendDebugMessage("Player "+player.getName()+" is now waiting");
+                player.teleport(LocationManager.getLocation(LOCATIONTYPE.LOBBY));
                 Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
                     @Override
                     public void run() {
@@ -62,7 +63,7 @@ public class EventPlayerJoin implements Listener {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
                     @Override
                     public void run() {
-                        player.teleport(PlayerManager.isAliveMap.get(0));
+                        player.teleport(PlayerManager.isAliveList.get(0));
                     }
                 }, 1);
                 player.sendMessage(Text.PREFIX+"§7Das Spiel läuft bereits.");
