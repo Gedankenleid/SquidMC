@@ -7,6 +7,7 @@ import de.lamue.squidgame.squidgame.commands.CommandStart;
 import de.lamue.squidgame.squidgame.listeners.*;
 import de.lamue.squidgame.squidgame.utils.*;
 import de.lamue.squidgame.squidgame.utils.database.MySQL;
+import de.lamue.squidgame.squidgame.utils.tablist.TitleAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -58,6 +59,7 @@ public final class SquidMC extends JavaPlugin {
         //MySQL.keepOnline();
         new Scoreboard().update();
         EventEnvironmentChange.keepDay();
+        TitleAPI.actionBarRunner();
         Bukkit.getConsoleSender().sendMessage(Text.PREFIX + "§aPlugin gestartet!");
     }
 

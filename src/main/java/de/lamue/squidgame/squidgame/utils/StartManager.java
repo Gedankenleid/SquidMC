@@ -1,6 +1,7 @@
 package de.lamue.squidgame.squidgame.utils;
 
 import de.lamue.squidgame.squidgame.SquidMC;
+import de.lamue.squidgame.squidgame.utils.tablist.TitleAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -52,6 +53,11 @@ public class StartManager {
                 public void run() {
                     if(isAbleToStart()){
                         counter--;
+                        if(counter != 1){
+                            TitleAPI.setActionbarTextAll("§7§lStart in §e§l"+counter+" Sekunden§7§l!");
+                        }else{
+                            TitleAPI.setActionbarTextAll("§7§lStart in §e§l"+counter+" Sekunde§7§l!");
+                        }
                         if(counter == 30){
                             for(Player currentPlayer : Bukkit.getOnlinePlayers()){
                                 Text.sendTextToPlayerWithSound(currentPlayer, Text.PREFIX+"Das Spiel startet in §e"+counter+" Sekunden§7!", Sound.BLOCK_ANVIL_PLACE);
@@ -95,6 +101,7 @@ public class StartManager {
                         for(Player currentPlayer : Bukkit.getOnlinePlayers()){
                             Text.sendTextToPlayerWithSound(currentPlayer, Text.PREFIX+"Der Countdown wurde abgebrochen!", Sound.AMBIENT_CAVE);
                         }
+                        TitleAPI.setActionbarTextAll("§3§lSquid§c§lMC");
                         counter = WAITINGTIME+1;
                         Bukkit.getScheduler().cancelTask(COUNTDOWN);
                     }
@@ -104,6 +111,7 @@ public class StartManager {
     }
 
     public static void start(){
+        TitleAPI.setActionbarTextAll("");
         for(Player currentPlayer : Bukkit.getOnlinePlayers()){
             Text.sendTextToPlayerWithSound(currentPlayer, Text.PREFIX+"Das Spiel startet in §ejetzt§7!", Sound.ENTITY_PLAYER_LEVELUP);
             PlayerManager.setPlayerStatus(currentPlayer, PLAYERSTATUS.INGAME);

@@ -1,16 +1,18 @@
 package de.lamue.squidgame.squidgame.utils;
 
 import de.lamue.squidgame.squidgame.SquidMC;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import de.lamue.squidgame.squidgame.utils.tablist.TitleAPI;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
 public class GameManager {
+
+    public static boolean allowedToChat = true;
+
+    public static boolean smoke = true;
 
     public static boolean isEnd = false;
 
@@ -117,6 +119,7 @@ public class GameManager {
             currentPlayer.teleport(LocationManager.getLocation(LOCATIONTYPE.LOBBY));
             currentPlayer.setGameMode(GameMode.SURVIVAL);
             Text.sendTextToPlayerWithSound(currentPlayer, Text.PREFIX+"§e"+winner.getDisplayName()+" §7hat das Spiel §agewonnen§7!", Sound.ENTITY_ENDER_DRAGON_DEATH);
+            TitleAPI.setActionbarTextAll("§e§l"+winner.getDisplayName()+" §7hat das Spiel §a§lgewonnen§7!");
             currentPlayer.setAllowFlight(false);
             currentPlayer.setHealth(20);
             currentPlayer.setFoodLevel(20);
@@ -201,6 +204,7 @@ public class GameManager {
             FINISHED.clear();
             for(Player currentPlayer : PlayerManager.isAliveList){
                 currentPlayer.setGameMode(GameMode.SURVIVAL);
+                Text.sendTextToPlayerWithSound(currentPlayer, Text.PREFIX+"Das Preisgeld beträgt §e"+currentPrize+" Coins§7!", Sound.BLOCK_NOTE_BLOCK_PLING);
             }
             for(Player currentPlayer : Bukkit.getOnlinePlayers()){
                 currentPlayer.setHealth(20);
@@ -211,31 +215,99 @@ public class GameManager {
                 currentPlayer.sendTitle("§d§l"+GAME.getName(game), "", 5, 20*5, 5);
             }
             if(game.equals(GAME.PVP)){
+                TitleAPI.setActionbarTextAll("§3§lTöte alle Spieler!");
                 PVP = true;
                 ItemStack sword = Item.createItem(Material.IRON_SWORD, 1, 0, "§7§lMesser");
                 for(Player currentPlayer : PlayerManager.isAliveList){
                     currentPlayer.getInventory().addItem(sword);
                 }
+                Bukkit.broadcastMessage(Text.PREFIX+"Nach §b§l2 Minuten §7enden die Spiele!");
+                Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.broadcastMessage(Text.PREFIX+"Die Spiele enden...");
+                        while (smoke){
+                            for(Player currentPlayer : PlayerManager.isAliveList){
+                                currentPlayer.getWorld().playEffect(currentPlayer.getLocation().add(0,1.6,0), Effect.SMOKE, 128);
+                            }
+                        }
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
+                            @Override
+                            public void run() {
+                                smoke = false;
+                                for(Player currentPlayer : PlayerManager.isAliveList){
+                                    currentPlayer.setHealth(0);
+                                }
+                            }
+                        }, 20*3);
+                    }
+                }, 20*60*2);
             }
             if(game.equals(GAME.REDLIGHTGREENLIGHT)){
+                allowedToChat = false;
+                TitleAPI.setActionbarTextAll("§8§lErklärung (im Chat)");
+                Bukkit.broadcastMessage(Text.PREFIX+"Komme so schnell wie möglich an das Ziel");
+                for(Player currentPlayer : Bukkit.getOnlinePlayers()){
+                    currentPlayer.playSound(currentPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                }
+                Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.broadcastMessage(Text.PREFIX+"Du darfst dich nur zu einer bestimmten Zeit bewegen!");
+                        for(Player currentPlayer : Bukkit.getOnlinePlayers()){
+                            currentPlayer.playSound(currentPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                        }
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
+                            @Override
+                            public void run() {
+                                Bukkit.broadcastMessage(Text.PREFIX+"Bewegst du dich außerhalb dieser Zeit, §cstirbst §7du.");
+                                for(Player currentPlayer : Bukkit.getOnlinePlayers()){
+                                    currentPlayer.playSound(currentPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                                }
+                                Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Bukkit.broadcastMessage(Text.PREFIX+"Wer nicht ans Ziel kommt, §cstirbt §7auch.");
+                                        for(Player currentPlayer : Bukkit.getOnlinePlayers()){
+                                            currentPlayer.playSound(currentPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                                        }
+                                        Bukkit.getScheduler().scheduleSyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Bukkit.broadcastMessage(Text.PREFIX+"Bereit? Das Spiel startet in Kürze.");
+                                                for(Player currentPlayer : Bukkit.getOnlinePlayers()){
+                                                    currentPlayer.playSound(currentPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                                                }
+                                            }
+                                        }, 60);
+                                    }
+                                }, 60);
+                            }
+                        }, 60);
+                    }
+                }, 60);
                 ableToMove = false;
                 RLGLCounter = Bukkit.getScheduler().scheduleAsyncRepeatingTask(SquidMC.pluginInstance, new Runnable() {
                     @Override
                     public void run() {
+                        allowedToChat = true;
                         ableToMove = true;
                         if(counter != 9){
                             counter = counter+1;
                             for(Player currentPlayer : Bukkit.getOnlinePlayers()){
                                 SoundManager.sendSoundRedLightGreenLight(currentPlayer);
                                 allowedToMove = true;
-                                Text.sendTextToPlayerWithSound(currentPlayer, Text.PREFIX+"§a§lLaufen!", Sound.BLOCK_ANVIL_PLACE);
                             }
+                            TitleAPI.setActionbarTextAll("§a§lLaufen");
+                            RLGLAllowed();
                             Bukkit.getScheduler().scheduleAsyncDelayedTask(SquidMC.pluginInstance, new Runnable() {
                                 @Override
                                 public void run() {
+                                    allowedToMove = false;
+                                    TitleAPI.setActionbarTextAll("§c§lHalt");
+                                    RLGLForbidden();
                                     for(Player currentPlayer : Bukkit.getOnlinePlayers()){
-                                        allowedToMove = false;
-                                        Text.sendTextToPlayerWithSound(currentPlayer, Text.PREFIX+"§c§lHalt!", Sound.BLOCK_ANVIL_PLACE);
+                                        currentPlayer.playSound(currentPlayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
                                     }
                                 }
                             }, 70);
@@ -243,13 +315,11 @@ public class GameManager {
                             endRLGL();
                         }
                     }
-                }, 20*10, 120);
+                }, 20*15, 120);
             }else if(game.equals(GAME.ZUCKERFIGUR)){
+                allowedToMove = true;
+                TitleAPI.setActionbarTextAll("§d§lTauziehen");
                 //TODO: Tauziehen
-
-
-
-
             }
         }
     }
@@ -263,6 +333,7 @@ public class GameManager {
             }
         }
         if(PlayerManager.isAliveList.size() != 0){
+            Bukkit.getScheduler().cancelTask(GameManager.RLGLCounter);
             GameManager.FINISHED.clear();
             GameManager.addRoundNumber();
             GAME nextGame = GameManager.getNextGame();
@@ -283,5 +354,13 @@ public class GameManager {
             }
             Bukkit.getScheduler().cancelTask(RLGLCounter);
         }
+    }
+
+    public static void RLGLAllowed(){
+
+    }
+
+    public static void RLGLForbidden(){
+
     }
 }

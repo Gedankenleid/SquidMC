@@ -2,6 +2,7 @@ package de.lamue.squidgame.squidgame.listeners;
 
 import de.lamue.squidgame.squidgame.SquidMC;
 import de.lamue.squidgame.squidgame.utils.*;
+import de.lamue.squidgame.squidgame.utils.tablist.TitleAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -44,6 +45,7 @@ public class EventPlayerMove implements Listener {
                         GameManager.FINISHED.add(player);
                         if((GameManager.FINISHED.size() == PlayerManager.isAliveList.size()) && PlayerManager.isAliveList.size() != 0){
                             if(!GameManager.getCurrentGameStatus().equals(GAMESTATUS.END)){
+                                Bukkit.getScheduler().cancelTask(GameManager.RLGLCounter);
                                 GameManager.FINISHED.clear();
                                 GameManager.addRoundNumber();
                                 GAME nextGame = GameManager.getNextGame();

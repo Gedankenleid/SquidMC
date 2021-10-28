@@ -3,6 +3,7 @@ package de.lamue.squidgame.squidgame.listeners;
 import de.lamue.squidgame.squidgame.SquidMC;
 import de.lamue.squidgame.squidgame.utils.*;
 import de.lamue.squidgame.squidgame.utils.database.CoinsManager;
+import de.lamue.squidgame.squidgame.utils.tablist.TitleAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -16,6 +17,7 @@ public class EventPlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent playerJoinEvent){
         Player player = playerJoinEvent.getPlayer();
+        TitleAPI.setActionbarText(player, "§3§lSquid§c§lMC");
         player.setPlayerListHeaderFooter("§3§lSquid§c§lMC", "§8SquidMC.net");
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(false);
